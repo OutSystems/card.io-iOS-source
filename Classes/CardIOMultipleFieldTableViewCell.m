@@ -60,16 +60,32 @@
     field.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     CGFloat fontSize = [CardIOTableViewCell defaultDetailTextLabelFontSizeForCellStyle:self.cellStyle];
     field.font = [CardIOTableViewCell defaultDetailTextLabelFontForCellStyle:self.cellStyle fontSize:fontSize];
-    field.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:self.cellStyle];
-    field.backgroundColor = kColorDefaultCell;
+    
+    if (iOS_13_PLUS) {
+      field.textColor = [UIColor labelColor];
+      field.backgroundColor = [UIColor systemBackgroundColor];
+    }
+    else {
+      field.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:self.cellStyle];
+      field.backgroundColor = kColorDefaultCell;
+    }
+    
     [self.textFields addObject:field];
 
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectZero];
     label.textAlignment = self.textAlignment;
     fontSize = [CardIOTableViewCell defaultTextLabelFontSizeForCellStyle:self.cellStyle];
     label.font = [CardIOTableViewCell defaultTextLabelFontForCellStyle:self.cellStyle fontSize:fontSize];
-    label.textColor = [CardIOTableViewCell defaultTextLabelColorForCellStyle:self.cellStyle];
-    label.backgroundColor = kColorDefaultCell;
+    
+    if (iOS_13_PLUS) {
+      label.textColor = [UIColor labelColor];
+      label.backgroundColor = [UIColor systemBackgroundColor];
+    }
+    else {
+      label.textColor = [CardIOTableViewCell defaultTextLabelColorForCellStyle:self.cellStyle];
+      label.backgroundColor = kColorDefaultCell;
+    }
+    
     [self.labelLabels addObject:label];
   }
 }

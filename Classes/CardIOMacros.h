@@ -22,6 +22,7 @@
 @end
 
 #define iOS_MAJOR_VERSION  [CardIOMacros deviceSystemMajorVersion]
+#define iOS_13_PLUS        (iOS_MAJOR_VERSION >= 13)
 #define iOS_8_PLUS         (iOS_MAJOR_VERSION >= 8)
 #define iOS_7_PLUS         (iOS_MAJOR_VERSION >= 7)
 #define iOS_6              (iOS_MAJOR_VERSION == 6)

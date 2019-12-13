@@ -9,6 +9,7 @@
 #import "CardIOCGGeometry.h"
 #import "CardIOStyles.h"
 #import "CardIODataEntryViewController.h"
+#import "CardIOMacros.h"
 
 
 #define kFlashDuration 0.5f
@@ -33,7 +34,13 @@
 
     _cardView = [[UIImageView alloc] initWithImage:cardImage];
     _cardView.contentMode = UIViewContentModeScaleAspectFit;
-    _cardView.backgroundColor = kColorViewBackground;
+    
+    if (iOS_13_PLUS) {
+      _cardView.backgroundColor = [UIColor systemBackgroundColor];
+    }
+    else {
+      _cardView.backgroundColor = kColorViewBackground;
+    }
 
     _cardView.layer.masksToBounds = YES;
     _cardView.layer.borderColor = [UIColor grayColor].CGColor;

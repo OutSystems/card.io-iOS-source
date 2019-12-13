@@ -164,7 +164,14 @@
     self.cardView.bounds = CGRectZeroWithSize(CGSizeMake((CGFloat)ceil(self.floatingCardView.bounds.size.width),
                                                          (CGFloat)ceil(self.floatingCardView.bounds.size.height)));
     self.cardView.contentMode = UIViewContentModeScaleAspectFit;
-    self.cardView.backgroundColor = kColorViewBackground;
+    
+    if (iOS_13_PLUS) {
+      self.cardView.backgroundColor = [UIColor systemBackgroundColor];
+    }
+    else {
+      self.cardView.backgroundColor = kColorViewBackground;
+    }
+    
     self.cardView.layer.cornerRadius = ((CGFloat) 9.0f) * (self.cardView.bounds.size.width / ((CGFloat) 300.0f)); // matches the card, adjusted for view size. (view is ~300 px wide on phone.)
     self.cardView.layer.masksToBounds = YES;
     self.cardView.layer.borderColor = [UIColor grayColor].CGColor;
@@ -192,7 +199,6 @@
 
   if(self.manualEntry) {
     CardIOMultipleFieldTableViewCell *numberRow = [[CardIOMultipleFieldTableViewCell alloc] init];
-    numberRow.backgroundColor = kColorDefaultCell;
     numberRow.numberOfFields = 1;
     numberRow.hiddenLabels = YES;
     numberRow.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
@@ -209,13 +215,21 @@
     self.numberTextField.text = self.cardInfo.cardNumber ? self.cardInfo.cardNumber : @"";
     self.numberTextField.keyboardType = UIKeyboardTypeNumberPad;
     self.numberTextField.clearButtonMode = UITextFieldViewModeNever;
-    self.numberTextField.backgroundColor = kColorDefaultCell;
     self.numberTextField.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
     self.numberTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
     // For fancier masking (e.g., by number group rather than by individual digit),
     // put fancier functionality into CardIONumbersTextFieldDelegate instead of setting secureTextEntry.
     self.numberTextField.secureTextEntry = self.context.maskManualEntryDigits;
+    
+    if (iOS_13_PLUS) {
+      numberRow.backgroundColor = [UIColor systemBackgroundColor];
+      self.numberTextField.backgroundColor = [UIColor systemBackgroundColor];
+    }
+    else {
+      numberRow.backgroundColor = kColorDefaultCell;
+      self.numberTextField.backgroundColor = kColorDefaultCell;
+    }
 
     [self updateCardLogo];
 
@@ -224,7 +238,14 @@
 
   if(self.collectExpiry || self.collectCVV) {
     CardIOMultipleFieldTableViewCell *multiFieldRow = [[CardIOMultipleFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    multiFieldRow.backgroundColor = kColorDefaultCell;
+    
+    if (iOS_13_PLUS) {
+      multiFieldRow.backgroundColor = [UIColor systemBackgroundColor];
+    }
+    else {
+      multiFieldRow.backgroundColor = kColorDefaultCell;
+    }
+    
     multiFieldRow.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
 
     BOOL collectBoth = self.collectExpiry && self.collectCVV;
@@ -255,6 +276,10 @@
       self.expiryTextField.keyboardType = UIKeyboardTypeNumberPad;
       self.expiryTextField.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
       self.expiryTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+      
+      if (iOS_13_PLUS) {
+        self.expiryTextField.backgroundColor = [UIColor systemBackgroundColor];
+      }
 
       if(self.cardInfo.expiryMonth > 0 && self.cardInfo.expiryYear > 0) {
         self.expiryTextField.text = [self.expiryTextFieldDelegate.formatter stringForObjectValue:self.cardInfo];
@@ -268,7 +293,14 @@
       [rows addObject:multiFieldRow];
       multiFieldRow = [[CardIOMultipleFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
       multiFieldRow.hiddenLabels = YES;
-      multiFieldRow.backgroundColor = kColorDefaultCell;
+      
+      if (iOS_13_PLUS) {
+        multiFieldRow.backgroundColor = [UIColor systemBackgroundColor];
+      }
+      else {
+        multiFieldRow.backgroundColor = kColorDefaultCell;
+      }
+      
       multiFieldRow.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
     }
 
@@ -294,6 +326,10 @@
       self.cvvTextField.text = @"";
       self.cvvTextField.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
       self.cvvTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+      
+      if (iOS_13_PLUS) {
+        self.cvvTextField.backgroundColor = [UIColor systemBackgroundColor];
+      }
     }
 
     [rows addObject:multiFieldRow];
@@ -301,7 +337,6 @@
 
   if(self.collectPostalCode) {
     CardIOMultipleFieldTableViewCell *postalCodeRow = [[CardIOMultipleFieldTableViewCell alloc] init];
-    postalCodeRow.backgroundColor = kColorDefaultCell;
     postalCodeRow.numberOfFields = 1;
     postalCodeRow.hiddenLabels = YES;
     postalCodeRow.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
@@ -326,13 +361,20 @@
     self.postalCodeTextField.text = @"";
     self.postalCodeTextField.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
     self.postalCodeTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    
+    if (iOS_13_PLUS) {
+      postalCodeRow.backgroundColor = [UIColor systemBackgroundColor];
+      self.postalCodeTextField.backgroundColor = [UIColor systemBackgroundColor];
+    }
+    else {
+      postalCodeRow.backgroundColor = kColorDefaultCell;
+    }
 
     [rows addObject:postalCodeRow];
   }
 
   if(self.collectCardholderName) {
     CardIOMultipleFieldTableViewCell *cardholderNameRow = [[CardIOMultipleFieldTableViewCell alloc] init];
-    cardholderNameRow.backgroundColor = kColorDefaultCell;
     cardholderNameRow.numberOfFields = 1;
     cardholderNameRow.hiddenLabels = YES;
     cardholderNameRow.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
@@ -353,6 +395,14 @@
     self.cardholderNameTextField.textAlignment = [CardIOLocalizer textAlignmentForLanguageOrLocale:self.context.languageOrLocale];
     self.cardholderNameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.cardholderNameTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    
+    if (iOS_13_PLUS) {
+      cardholderNameRow.backgroundColor = [UIColor systemBackgroundColor];
+      self.cardholderNameTextField.backgroundColor = [UIColor systemBackgroundColor];
+    }
+    else {
+      cardholderNameRow.backgroundColor = kColorDefaultCell;
+    }
 
     [rows addObject:cardholderNameRow];
   }
@@ -366,13 +416,21 @@
 
   self.tableView.delegate = self.tableViewDelegate;
   self.tableView.dataSource = self.tableViewDelegate;
-  self.tableView.backgroundColor = kColorViewBackground;
   self.tableView.opaque = YES;
 
-  self.view.backgroundColor = kColorViewBackground;
-
   UIView *background = [[UIView alloc] initWithFrame:self.tableView.bounds];
-  background.backgroundColor = kColorViewBackground;
+  
+  if (iOS_13_PLUS) {
+    self.tableView.backgroundColor = [UIColor systemBackgroundColor];
+    self.view.backgroundColor = [UIColor systemBackgroundColor];
+    background.backgroundColor = [UIColor systemBackgroundColor];
+  }
+  else {
+    self.tableView.backgroundColor = kColorViewBackground;
+    self.view.backgroundColor = kColorViewBackground;
+    background.backgroundColor = kColorViewBackground;
+  }
+  
   self.tableView.backgroundView = background;
 
   [self.scrollView addSubview:self.tableView];
@@ -870,13 +928,24 @@
       [self advanceToNextEmptyFieldFrom:self.numberTextField];
       recursionBlock = NO;
     }
-    self.numberTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    
+    if (iOS_13_PLUS) {
+      self.numberTextField.textColor = [UIColor labelColor];
+    }
+    else {
+      self.numberTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    }
   } else if ([self.cardInfo.cardNumber length] > 0 &&
              ((cardType == CardIOCreditCardTypeUnrecognized && [self.cardInfo.cardNumber length] == 16) ||
               self.cardInfo.cardNumber.length == [CardIOCreditCardNumber numberLengthForCardNumber:self.cardInfo.cardNumber])) {
                self.numberTextField.textColor = [UIColor redColor];
              } else {
-               self.numberTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+               if (iOS_13_PLUS) {
+                 self.numberTextField.textColor = [UIColor labelColor];
+               }
+               else {
+                 self.numberTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+               }
              }
 
   [self updateCardLogo];
@@ -925,11 +994,23 @@
       [self advanceToNextEmptyFieldFrom:self.expiryTextField];
       recursionBlock = NO;
     }
-    self.expiryTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    
+    if (iOS_13_PLUS) {
+      self.expiryTextField.textColor = [UIColor labelColor];
+    }
+    else {
+      self.expiryTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    }
+    
   } else if(self.expiryTextField.text.length >= 7) {
     self.expiryTextField.textColor = [UIColor redColor];
   } else {
-    self.expiryTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    if (iOS_13_PLUS) {
+      self.expiryTextField.textColor = [UIColor labelColor];
+    }
+    else {
+      self.expiryTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    }
   }
 
   [self validate];
@@ -951,11 +1032,21 @@
 
 - (void)updateCvvColor {
   if([CardIOCVVTextFieldDelegate isValidCVV:self.cardInfo.cvv forNumber:self.cardInfo.cardNumber]) {
-    self.cvvTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    if (iOS_13_PLUS) {
+      self.cvvTextField.textColor = [UIColor labelColor];
+    }
+    else {
+      self.cvvTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    }
   } else if(self.cvvTextField.text.length > [self cvvLength]) {
     self.cvvTextField.textColor = [UIColor redColor];
   } else {
-    self.cvvTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    if (iOS_13_PLUS) {
+      self.cvvTextField.textColor = [UIColor labelColor];
+    }
+    else {
+      self.cvvTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    }
   }
 }
 
@@ -981,12 +1072,22 @@
   self.cardInfo.cardholderName = self.cardholderNameTextField.text;
 
   if([CardIOCardholderNameTextFieldDelegate isValidCardholderName:self.cardInfo.cardholderName]) {
-    self.cardholderNameTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    if (iOS_13_PLUS) {
+      self.cardholderNameTextField.textColor = [UIColor labelColor];
+    }
+    else {
+      self.cardholderNameTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    }
   } else if(self.cardholderNameTextField.text.length >= 175) {
-    // probably won't reach this case, since length == 175 is the only validation rule, but we'll leave it here for consitency and for future enhancements.
+    // probably won't reach this case, since length == 175 is the only validation rule, but we'll leave it here for consistency and for future enhancements.
     self.cardholderNameTextField.textColor = [UIColor redColor];
   } else {
-    self.cardholderNameTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    if (iOS_13_PLUS) {
+      self.cardholderNameTextField.textColor = [UIColor labelColor];
+    }
+    else {
+      self.cardholderNameTextField.textColor = [CardIOTableViewCell defaultDetailTextLabelColorForCellStyle:[CardIOTableViewCell defaultCellStyle]];
+    }
   }
 
   [self validate];

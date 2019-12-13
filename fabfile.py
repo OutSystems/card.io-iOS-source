@@ -164,7 +164,7 @@ def build(outdir=None, device_sdk=None, simulator_sdk=None, **kwargs):
 
                 # Build the Archive release
                 print(colors.blue("({build_config}) Building Archive (arm* architectures specified in build config)".format(**locals())))
-                base_xcodebuild_command = "xcrun xcodebuild -scheme \"CardIO Static Library\" -target CardIO-static -configuration {build_config} archive".format(**locals())
+                base_xcodebuild_command = "xcrun xcodebuild -scheme \"CardIO Static Library\" -target CardIO-static -destination generic/platform=iOS -configuration {build_config} archive".format(**locals())
                 build_dir = os.path.join(temp_dir, build_config, "Archive")
                 arch_build_dirs["archive"] = build_dir
                 os.makedirs(build_dir)
@@ -195,8 +195,6 @@ def build(outdir=None, device_sdk=None, simulator_sdk=None, **kwargs):
                 # in Xcode 4.5 GM, xcrun selects the wrong lipo to use, so circumventing xcrun for now :(
                 lipo_cmd = "`xcode-select -print-path`/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo " \
                            "           {archive}/{libname}" \
-                           "           -arch i386 {i386}/{libname}" \
-                           "           -arch x86_64 {x86_64}/{libname}" \
                            "           -create" \
                            "           -output {universal}/{libname}".format(libname=env.libname, **arch_build_dirs)
                 local(lipo_cmd)
